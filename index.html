@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halcyon Society — Private Membership</title>
+    <meta name="description" content="A private society for exceptional individuals across industries, borders, and backgrounds. United not by title or wealth alone, but by character, curiosity, and a genuine desire to lift others as they climb.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* === TOKENS === */
+        :root {
+            --bg:           #0E0E12;
+            --surface:      #13131A;
+            --text:         #F5F0E8;
+            --muted:        #7A7670;
+            --gold:         #C9A96E;
+            --gold-bg:      rgba(201,169,110,0.08);
+            --border:       rgba(255,255,255,0.07);
+            --max:          740px;
+            --pad-section:  128px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 17px;
+            line-height: 1.85;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === SHARED === */
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 36px;
+        }
+
+        .eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .rule {
+            width: 36px;
+            height: 1px;
+            background: var(--gold);
+            margin: 0 auto 64px;
+            opacity: 0.6;
+        }
+
+        /* === REVEAL ON SCROLL === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+        .reveal.in { opacity: 1; transform: none; }
+
+        /* === HERO === */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 36px;
+        }
+
+        .hero-mark {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: rise 2s ease forwards 0.2s;
+        }
+
+        .hero-wordmark {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 64px;
+            opacity: 0;
+            animation: rise 2s ease forwards 0.6s;
+        }
+
+        .hero-headline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(34px, 5.5vw, 58px);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.25;
+            color: var(--text);
+            max-width: 660px;
+            margin: 0 auto 28px;
+            opacity: 0;
+            animation: rise 2s ease forwards 1s;
+        }
+
+        .hero-sub {
+            font-size: 15px;
+            color: var(--muted);
+            max-width: 500px;
+            margin: 0 auto 56px;
+            line-height: 1.95;
+            opacity: 0;
+            animation: rise 2s ease forwards 1.3s;
+        }
+
+        .btn {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 17px 46px;
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s;
+            opacity: 0;
+            animation: rise 2s ease forwards 1.6s;
+        }
+        .btn:hover { background: var(--gold); color: var(--bg); }
+        .btn.plain { opacity: 1; animation: none; }
+
+        /* === WHAT WE ARE === */
+        #what {
+            padding: var(--pad-section) 0;
+            background: var(--surface);
+        }
+
+        #what p {
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        #what p:first-of-type {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1.55;
+            margin-bottom: 36px;
+        }
+
+        /* === WHO === */
+        #who { padding: var(--pad-section) 0; }
+
+        #who h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 44px);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .lead {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.95;
+            margin-bottom: 56px;
+        }
+
+        .criteria { display: flex; flex-direction: column; }
+
+        .criterion {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+        .criterion:last-child { border-bottom: 1px solid var(--border); }
+
+        .crit-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .criterion h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .criterion p { color: var(--muted); font-size: 16px; }
+
+        /* === MEMBERSHIP === */
+        #membership {
+            padding: var(--pad-section) 0;
+            background: var(--surface);
+        }
+
+        #membership h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 44px);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .pull {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(38px, 5.5vw, 60px);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text);
+            text-align: center;
+            margin: 56px 0;
+            line-height: 1.1;
+        }
+
+        .benefits { display: flex; flex-direction: column; margin-top: 48px; }
+
+        .benefit {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 32px;
+            padding: 36px 0;
+            border-top: 1px solid var(--border);
+            align-items: start;
+        }
+        .benefit:last-child { border-bottom: 1px solid var(--border); }
+
+        .ben-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            padding-top: 3px;
+        }
+
+        .benefit p { color: var(--muted); font-size: 16px; line-height: 1.85; }
+
+        /* === NOT FOR === */
+        #notfor {
+            padding: var(--pad-section) 0;
+            text-align: center;
+        }
+
+        #notfor p {
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.95;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+
+        .closing-line {
+            font-family: 'Cormorant Garamond', serif !important;
+            font-size: clamp(20px, 2.5vw, 26px) !important;
+            font-style: italic;
+            color: var(--text) !important;
+            line-height: 1.5 !important;
+            margin-top: 12px !important;
+        }
+
+        /* === FOUNDING === */
+        #founding {
+            padding: var(--pad-section) 0;
+            background: var(--surface);
+        }
+
+        #founding h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 44px);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .logo-wall {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px 56px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 48px;
+            opacity: 0.35;
+            filter: grayscale(1);
+        }
+
+        .logo-item {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        /* === APPLY === */
+        #apply {
+            padding: var(--pad-section) 0;
+            text-align: center;
+        }
+
+        #apply h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 44px);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        #apply .lead {
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 48px;
+        }
+
+        .apply-note {
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* === FOOTER === */
+        footer {
+            padding: 72px 36px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        footer img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            opacity: 0.5;
+            margin-bottom: 18px;
+        }
+
+        .foot-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        footer a {
+            font-size: 13px;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        footer a:hover { color: var(--gold); }
+
+        .foot-copy {
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(122,118,112,0.35);
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* === MOBILE === */
+        @media (max-width: 600px) {
+            :root { --pad-section: 80px; }
+
+            .benefit {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .hero-mark { width: 120px; height: 120px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .hero-mark, .hero-wordmark, .hero-headline, .hero-sub, .btn {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+    <img src="halcyon_enso_final_white.png" alt="Halcyon Society mark" class="hero-mark">
+    <p class="hero-wordmark">Halcyon Society</p>
+    <h1 class="hero-headline">For those who have built something real — and remained human while doing it.</h1>
+    <p class="hero-sub">A private society for exceptional individuals across industries, borders, and backgrounds. United not by title or wealth alone, but by character, curiosity, and a genuine desire to lift others as they climb.</p>
+    <a href="#apply" class="btn">Apply for Membership</a>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WHAT WE ARE
+═══════════════════════════════════════════ -->
+<section id="what">
+    <div class="wrap">
+        <div class="rule reveal"></div>
+        <p class="reveal">Halcyon Society exists because achievement and genuine human connection are not mutually exclusive — though the world often makes them feel that way.</p>
+        <p class="reveal">We are a private, vetted membership society for people who have reached the highest levels of their field and still know how to sit across a table from another person and truly listen. People who have crossed oceans, changed industries, built things from nothing, solved problems others abandoned, and led teams with integrity rather than fear.</p>
+        <p class="reveal">This is not a networking platform. It is not a conference. It is not a directory of titles and credentials. It is something far older and far rarer — a genuine society of peers, built on the understanding that the most valuable thing exceptional people can offer each other is not their résumé, but their presence.</p>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WHO WE ARE FOR
+═══════════════════════════════════════════ -->
+<section id="who">
+    <div class="wrap">
+        <span class="eyebrow reveal">Membership</span>
+        <h2 class="reveal">Who belongs here.</h2>
+        <p class="lead reveal">You belong here if achievement has never been your only ambition. If you have lived across borders and collected perspectives the way others collect possessions. If you believe that real wealth is measured not only in what you have accumulated, but in what you have contributed — and who you have become in the process.</p>
+
+        <div class="criteria">
+            <div class="criterion reveal">
+                <span class="crit-label">Track I</span>
+                <h3>Extraordinary Achievement</h3>
+                <p>You have reached the top of your field, however you define that field. This includes founding companies, leading at executive level, advancing human knowledge, or creating work that moves people.</p>
+            </div>
+            <div class="criterion reveal">
+                <span class="crit-label">Track II</span>
+                <h3>Exceptional Character</h3>
+                <p>Credentials without character are not enough. We look for people whose integrity, generosity, and humanity are as well-documented as their professional accomplishments. The two must match.</p>
+            </div>
+            <div class="criterion reveal">
+                <span class="crit-label">Track III</span>
+                <h3>Global Perspective</h3>
+                <p>You have lived, worked, or built across cultures and countries. You understand that the world is larger than any single perspective — and you are richer, and more useful to others, for it.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     MEMBERSHIP
+═══════════════════════════════════════════ -->
+<section id="membership">
+    <div class="wrap">
+        <span class="eyebrow reveal">What You Gain</span>
+        <h2 class="reveal">Most networks give you contacts.</h2>
+        <p class="lead reveal">Halcyon Society gives you something that cannot be manufactured or algorithmically matched.</p>
+
+        <p class="pull reveal">"A home."</p>
+
+        <p class="lead reveal" style="margin-bottom:0;">A place where you can arrive on the worst day of a difficult quarter and find someone who has been there — someone with the experience to help and the character to genuinely care. Where conversation is never transactional. Where the laughter is real, the counsel is honest, and the friendships outlast any business cycle.</p>
+
+        <div class="benefits">
+            <div class="benefit reveal">
+                <span class="ben-label">Peer Network</span>
+                <p>A small, carefully vetted circle of exceptional individuals across industries, geographies, and disciplines. Quantity is never the goal. Quality is the only metric that matters.</p>
+            </div>
+            <div class="benefit reveal">
+                <span class="ben-label">Intelligence</span>
+                <p>Private member briefings, peer knowledge exchange, and access to perspectives and information that exist nowhere on the public internet.</p>
+            </div>
+            <div class="benefit reveal">
+                <span class="ben-label">Connection</span>
+                <p>Curated introductions, intimate dinners, and an annual flagship gathering. Every interaction is designed to go deeper than a business card exchange.</p>
+            </div>
+            <div class="benefit reveal">
+                <span class="ben-label">Community</span>
+                <p>Not a platform you log into when you need something. A society you belong to. The difference is felt immediately — and it compounds over years.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WHO WE ARE NOT FOR
+═══════════════════════════════════════════ -->
+<section id="notfor">
+    <div class="wrap">
+        <div class="rule reveal"></div>
+        <p class="reveal">Halcyon Society is selective not to be exclusionary, but to protect the quality of what happens inside.</p>
+        <p class="reveal">We are not for those whose achievements exist only on paper. Not for those who lead with their title before their name. Not for those who measure the value of a room by who can be useful to them before the night is over.</p>
+        <p class="reveal closing-line">If you are looking for a platform to be seen, this is not it.<br>If you are looking for a place to truly belong — this might be exactly it.</p>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOUNDING MEMBERS
+═══════════════════════════════════════════ -->
+<section id="founding">
+    <div class="wrap">
+        <span class="eyebrow reveal">Founding Members</span>
+        <h2 class="reveal">Built from the inside out.</h2>
+        <p class="lead reveal">Halcyon Society was built beginning with a founding cohort of extraordinary individuals who share a belief that exceptional people, brought together with intention, can achieve something greater than any of them could alone.</p>
+
+        <div class="logo-wall reveal">
+            <span class="logo-item">Goldman Sachs</span>
+            <span class="logo-item">Google</span>
+            <span class="logo-item">McKinsey & Co</span>
+            <span class="logo-item">Samsung</span>
+            <span class="logo-item">OpenAI</span>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     APPLY
+═══════════════════════════════════════════ -->
+<section id="apply">
+    <div class="wrap">
+        <span class="eyebrow reveal">Apply</span>
+        <h2 class="reveal">Membership by application only.</h2>
+        <p class="lead reveal">We review every application personally. There is no algorithm, no automated shortlist. The process takes two to three weeks. We are looking for people, not profiles. If you are accepted, you will hear from us directly.</p>
+        <a href="mailto:contact@halcyonsociety.com" class="btn plain reveal">Apply for Membership</a>
+        <p class="apply-note reveal">We read every application. We respond to every one.</p>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+    <img src="halcyon_enso_final_white.png" alt="Halcyon Society">
+    <p class="foot-name">Halcyon Society</p>
+    <a href="mailto:contact@halcyonsociety.com">contact@halcyonsociety.com</a>
+    <p class="foot-copy">© 2025 Halcyon Society &nbsp;·&nbsp; Private Membership — By Application Only</p>
+</footer>
+
+<script>
+    // Scroll reveal
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.08 });
+    els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
